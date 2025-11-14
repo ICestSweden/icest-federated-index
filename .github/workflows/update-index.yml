@@ -37,8 +37,7 @@ jobs:
           git add index.db
           git commit -m "Update index: $(date -u +%Y-%m-%d)" || echo "No changes to commit"
           
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PUSH_TOKEN}}
-          branch: main
+          - name: Push changes
+          run: |
+            git remote set-url origin https://${{ secrets.PUSH_TOKEN }}@github.com/ICestSweden/icest-federated-index.git
+            git push origin main
