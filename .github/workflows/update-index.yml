@@ -2,12 +2,15 @@ name: Update Component Index
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Daily at midnight UTC
-  workflow_dispatch:  # Manual trigger button
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update-index:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
     
     steps:
       - name: Checkout repo
@@ -37,7 +40,8 @@ jobs:
           git add index.db
           git commit -m "Update index: $(date -u +%Y-%m-%d)" || echo "No changes to commit"
           
-          - name: Push changes
-          run: |
-            git remote set-url origin https://${{ secrets.PUSH_TOKEN }}@github.com/ICestSweden/icest-federated-index.git
-            git push origin main
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PUSH_TOKEN }}
+          branch: main
