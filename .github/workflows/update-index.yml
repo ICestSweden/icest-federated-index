@@ -30,11 +30,10 @@ jobs:
       - name: Run KiCad Parser
         run: python scripts/parse_kicad.py --input-dir /tmp/kicad-libraries --output-db index.db
           
-      - name: Commit updated index
-        run: git config --local user.email "actions@github.com" && git config --local user.name "GitHub Actions" && git add index.db && git commit -m "Update index: $(date -u +%Y-%m-%d)" || echo "No changes to commit"
-          
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Auto-commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          github_token: ${{ secrets.PUSH_TOKEN }}
-          branch: main
+          commit_message: "Update index: $(date -u +%Y-%m-%d)"
+          file_pattern: 'index.db'
+          commit_user_name: GitHub Actions
+          commit_user_email: actions@github.com
