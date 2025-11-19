@@ -38,7 +38,7 @@ jobs:
           GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/parse_github_boms.py $GITHUB_API_TOKEN index.db
       
-      name: Run Kitspace Parser
+      - name: Run Kitspace Parser
         run: python3 scripts/parse_kitspace.py index.db
       
       - name: Auto-commit changes
